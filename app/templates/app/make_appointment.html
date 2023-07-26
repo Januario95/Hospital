@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block title %}
+	<title>Marcar Consulta</title>
+{% endblock %}
+
+{% block style %}
+	<style>
+		.appointment-section {
+			display: flex;
+			width: 90%;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			margin-top: 10px;
+		}
+        .body-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ccc;
+            /*background-color: rgb(233, 246, 249); */
+            background-color: #46ACC2;
+            padding: 15px;
+            border-radius: 20px;
+        }
+        .body-section p {
+            padding: 0px;
+            margin: 0px;
+        }
+		select, input[type="submit"] {
+            width: 100%;
+            height: 31px;
+        }
+        select,
+		input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        input[type="submit"],
+		#id_password {
+            height: 28px;
+            width: 100%;
+            min-width: 230px;
+            border-radius: 17px;
+            border: 1px solid #ccc;
+            text-align: center;
+            outline: none;
+        }
+		input[type="submit"] {
+			cursor: pointer;
+		}
+		select:focus,
+		input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="email"]:focus,
+		input[type="submit"]:focus,
+		#id_password:focus {
+			
+		}
+		.result-section {
+			width: 100%;
+			margin-top: 15px;
+			border-top: 6px solid teal;
+			padding: 20px;
+			border-radius: 0px 0px 10px 10px;
+			background-color: white;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		}
+		.result-section table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+		.result-section tr {
+			border-bottom: 1px solid #ccc;
+		}
+		.result-section th,
+		.result-section td {
+			/*border: 1px solid #ccc;*/
+			padding: 5px;
+		}
+		.result-section td {
+			font-size: 13px;
+		}
+		.row {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		.gender {
+			font-weight: normal;
+		}
+		.link {
+			text-decoration: none;
+		}
+		td a {
+			text-decoration: none;
+		}
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            margin-top: 8px;
+        }
+        .form-row label {
+            font-size: 13px;
+            color: white;
+        }
+        #id_priority {
+            margin-bottom: 10px;
+        }
+        .asterisk {
+            font-size: 10px;
+            margin-top: 5px;
+            color: white;
+        }
+        .patient-exists {
+            font-size: 11px;
+            color: yellow;
+            font-weight: bold;
+        }
+        
+
+		@media only screen and (max-width: 768px) {
+            .body-section {
+                
+            }
+			select, input[type="submit"] {
+                width: 100%;
+				max-width: 230px;
+				height: 28px;
+            }
+			input[type="text"],
+            input[type="date"],
+            input[type="email"],
+			#id_password {
+				width: 100%;
+				max-width: 230px;
+				height: 25px;
+			}
+            .form-row label {
+                font-size: 12px;
+            }
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	<div class="appointment-section">
+		<div class="body-section">
+            <p>Marcar Consulta</p>
+			<form method="post">
+                <div class="form-row">
+                    <label for="id_first_name">Primeiro nome<span class="required-field">*</span></label>
+                    {{ form.first_name }}
+                </div>
+                <div class="form-row">
+                    <label for="id_last_name">Ultimo nome<span class="required-field">*</span></label>
+                    {{ form.last_name }}
+                </div>
+                <div class="form-row">
+                    <label for="id_email">Email</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-row">
+                    <label for="id_desease">Doença<span class="required-field">*</span></label>
+                    {{ form.disease }}
+                </div>
+                <div class="form-row">
+                    <label for="id_phone_number">Numero de telefone<span class="required-field">*</span></label>
+                    {{ form.phone_number }}
+                </div>
+                <div class="form-row">
+                    <label for="id_date">Data</label>
+                    {{ form.date }}
+                </div>
+                <div class="form-row">
+                    <label for="id_priority">Prioridade</label>
+                    {{ form.priority }}
+                </div>
+                {% csrf_token %}
+                <div class="form-row">
+                    <input type="submit" class="btn-submit" value="Marcar">
+                    <span class="asterisk">* Campos obrigatórios</span>
+                </div>
+            </form>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	<script>
+		
+	</script>
+{% endblock %}
+

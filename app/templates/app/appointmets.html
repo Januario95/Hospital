@@ -1,0 +1,404 @@
+{% extends "base.html" %}
+
+{% block title %}
+	<title>Marcar Consulta</title>
+{% endblock %}
+
+{% block style %}
+	<style>
+		.appointment-section {
+			display: flex;
+			width: 90%;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+        .body-section {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /*background-color: rgb(233, 246, 249); */
+            padding: 15px;
+            border-radius: 20px;
+        }
+        .body-section p {
+            padding: 0px;
+            margin: 0px;
+        }
+        .body-section form {
+            width: 100%;
+            padding: 6px 21px 21px 21px;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /*border-radius: 40px;
+            border: 1px solid #ccc;*/
+        }
+        .results-section {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+		select, input[type="submit"] {
+            width: 100%;
+            height: 31px;
+        }
+        select,
+		input[type="text"],
+        input[type="date"],
+        input[type="month"],
+        input[type="email"],
+        input[type="submit"],
+		#id_password {
+            height: 28px;
+            width: 100%;
+            min-width: 160px;
+            border-radius: 17px;
+            border: 1px solid #ccc;
+            text-align: center;
+            outline: none;
+        }
+		input[type="submit"] {
+			cursor: pointer;
+		}
+		select:focus,
+		input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="email"]:focus,
+		input[type="submit"]:focus,
+		#id_password:focus {
+			
+		}
+		.result-section {
+			width: 100%;
+            min-width: 425px;
+			padding: 20px;
+			border-radius: 30px; /* 10px 10px 10px; */
+			background-color: white;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		}
+		.result-section table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+		.result-section tr {
+            font-size: 14px;
+		}
+        .tr-tbody {
+            border-bottom: 1px solid #ccc;
+        }
+		.result-section th,
+		.result-section td {
+			/*border: 1px solid #ccc;*/
+			padding: 5px;
+		}
+		.result-section td {
+			font-size: 13px;
+		}
+		.row {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		.gender {
+			font-weight: normal;
+		}
+		.link {
+			text-decoration: none;
+		}
+		td a {
+			text-decoration: none;
+		}
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-row label {
+            font-size: 13px;
+        }
+        #id_priority {
+            margin-bottom: 10px;
+        }
+        .asterisk {
+            font-size: 10px;
+            margin-top: 5px;
+            color: white;
+        }
+        .center-td {
+            text-align: center;
+        }
+        .patiente-field {
+            display: none;
+        }
+        .date-field {
+            display: none;
+        }
+        .submitted-fields {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        .error {
+            color: red;
+            font-size: 11px;
+            font-style: italic;
+        }
+        .highlight-row {
+            color: white;
+            background-color: goldenrod;
+            transition: all 0.3s;
+            font-size: 16px;
+            transform: scale(1.05);
+        }
+        
+
+		@media only screen and (max-width: 768px) {
+            .body-section {
+                
+            }
+			select, input[type="submit"] {
+                width: 100%;
+				max-width: 230px;
+				height: 28px;
+            }
+			input[type="text"],
+            input[type="date"],
+            input[type="month"],
+            input[type="email"],
+			#id_password {
+				width: 100%;
+				height: 25px;
+			}
+            .form-row label {
+                font-size: 12px;
+            }
+            .result-section tr {
+                font-size: 12px;
+            }
+            .result-section td {
+                font-size: 11px;
+            }
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	<div class="appointment-section">
+		<div class="body-section">
+            <p>Pesquisar Consulta</p>
+            <span class="error"></span>
+			<form method="post">
+                <div class="submitted-fields">
+                    <div class="form-row">
+                        <label for="id_search_by">Tipo de pesquisa</label>
+                        <select name="search_by" id="id_search_by">
+                            <option value="...">...</option>
+                            <option value="Name">Name</option>
+                            <option value="Date">Date</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row patiente-field">
+                        <label for="id_patient_name">Nome do paciente</label>
+                        {{ form.patient_name }}
+                    </div>
+                    <div class="form-row date-field">
+                        <label for="id_date">Selecionar mes</label>
+                        {{ form.date }}
+                    </div>
+                </div>
+                
+                {% csrf_token %}
+                <div class="form-row">
+                    <label for="">.</label>
+                    <input type="submit" class="btn-submit" value="Pesquisar">
+                </div>
+            </form>
+            <div class="result-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="table-header" style="border-top-left-radius:35px;border-bottom-left-radius:35px;">
+                                #
+                            </th>
+                            <th class="table-header name" onclick="sortTable('name')">
+                                Primeiro nome
+                                <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th class="table-header amount" onclick="sortTable('amount')">
+                                Ultimo nome
+                                <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th class="table-header month" onclick="sortTable('month')">
+                                Telefone
+                                <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th class="table-header year" onclick="sortTable('year')">
+                                Doença
+                                <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th class="table-header type" onclick="sortTable('expense_type')">
+                                Prioridade
+                                <i class="fa-solid fa-sort"></i>
+                            </th>
+                            <th class="table-header priority" style="border-top-right-radius:35px;border-bottom-right-radius:35px;">
+                                Terminada
+                                <i class="fa-solid fa-sort"></i>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+	<script>
+		let search_by = document.getElementById('id_search_by');
+        let patienteField = document.querySelector('.patiente-field');
+        let patientName = document.getElementById('id_patient_name');
+        let dateField = document.querySelector('.date-field');
+        let date = document.getElementById('id_date');
+        date.value = getCurrentDate();
+
+        let error = document.querySelector('.error');
+        let btnSubmit = document.querySelector('.btn-submit');
+        let tbody = document.querySelector('tbody');
+
+        function getCurrentDate() {
+            function formatDate(date) {
+                if (parseInt(date) < 10) {
+                    return '0' + date;
+                }
+                return date;
+            }
+            let today = new Date();
+            return `${formatDate(today.getFullYear())}-${formatDate(today.getMonth()+1)}-${formatDate(today.getDate())}`;
+        }
+
+        search_by.addEventListener('change', e => {
+            error.textContent = '';
+            let value = e.target.value;
+            if (value == 'Name') {
+                dateField.style.display = 'none';
+                patienteField.style.display = 'flex';
+                date.value = getCurrentDate();
+            } else if (value == 'Date') {
+                patienteField.style.display = 'none';
+                dateField.style.display = 'flex';
+                // date.setAttribute('required', '');
+                // patientName.removeAttribute('required');
+                patientName.value = 'Insira nome';
+            }
+        });
+
+        const arrayRange = (start, stop, step) =>
+            Array.from(
+                { length: (stop - start) / step + 1 },
+                (value, index) => start + index * step
+            );
+
+        console.log();
+        
+        function highlightRow() {
+            let range = arrayRange(1, 5, 1);
+            let trs = document.querySelectorAll('.tr-tbody');
+            for (let tr of trs) {
+                //
+            }
+        }
+        
+
+            
+        btnSubmit.addEventListener('click', e => {
+            e.preventDefault();
+            
+            if (patientName.value === '') { // && date.value === getCurrentDate()) {
+                // console.log(date.value)
+                error.textContent = 'Preencha os campos!';
+            } else {
+                error.textContent = '';
+                let csrfToken = "{{ csrf_token }}";
+                fetch('/get_appointments_api/', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({
+                        'name': patientName.value,
+                        'date': date.value
+                    })
+                })
+                        .then(res => res.json())
+                        .then(data => {
+                            tbody.innerHTML = '';
+                            // console.log(data);
+                            let values = data.data;
+                            if (values.length == 0) {
+                                let tr = document.createElement('tr');
+                                tr.innerHTML += `
+                                    <td colspan="7" style="text-align:center;">No result for your filter.</td>
+                                `;
+                                tbody.appendChild(tr);
+                            } else {
+                                let index = 1;
+                                for (let row of values) {
+                                    let completed;
+                                    if (row.completed) {
+                                        completed = `<td class="center-td" style="color:#46ACC2;font-weight:bold;border-top-right-radius:35px;border-bottom-right-radius:35px;">✓</td>`
+                                    } else {
+                                        completed = `<td class="center-td" style="color:red;font-weight:bold;border-top-right-radius:35px;border-bottom-right-radius:35px;">✗</td>`;
+                                    }
+                                    let tr = document.createElement('tr');
+                                    tr.classList.add('tr-tbody');
+                                    tr.classList.add(`tr-${ index }`);
+                                    tr.innerHTML += `
+                                        <td style="text-align:center;border-top-left-radius:35px;border-bottom-left-radius:35px;">${ index }</td>
+                                        <td class="center-td">${ row.patient.first_name }</td> 
+                                        <td class="center-td">${ row.patient.last_name }</td>
+                                        <td class="center-td">${ row.patient.phone_number }</td>
+                                        <td class="center-td">${ row.disease }</td>
+                                        <td class="center-td">${ row.priority }</td>
+                                        ${ completed }
+                                    `;
+                                    tbody.appendChild(tr);
+                                    let tr2 = $(`.tr-${ index }`);
+                                    tr2.click(function() {
+                                        console.log('Yes');
+                                        tr2.toggleClass('highlight-row');
+                                    });
+                                    index += 1;
+                                }
+                                /*
+                                let range = arrayRange(1, index, 1);
+                                for (let id of range) {
+                                    let tr = $(`.tr-${ id }`);
+                                    tr.click(function() {
+                                        console.log('Yes');
+                                    });
+                                }
+                                */
+                            }
+                        })
+                        .then(err => console.log(err));
+            }
+        });
+	</script>
+{% endblock %}
+
